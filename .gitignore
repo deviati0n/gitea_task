@@ -4,4 +4,4 @@
 
 venv/*
 /project_config/config.yaml
-/.pytest_cache/
+/test/.pytest_cache/
