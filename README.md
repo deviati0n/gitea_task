@@ -20,5 +20,5 @@ $ pip install -r requirements.txt
 изменить `options.headless = True`.
 
 ``` commandline
-$ pytest test.py
+$ pytest test/test.py
 ```
