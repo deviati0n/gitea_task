@@ -13,11 +13,12 @@ context = ProjectContext()
 
 
 def test_container():
-    response = None
-    try:
-        response = requests.get(context.gitea_config.root_url)
-    except requests.exceptions.ConnectionError:
-        time.sleep(3)
+    """
+    Проверка, что веб-страница сервиса Gitea на целевом порту доступна
+    и на ней находится 4 эталонных css-селектора + эталонный текст
+    """
+
+    response = requests.get(context.gitea_config.root_url)
 
     assert response.status_code == 200
 
@@ -35,6 +36,11 @@ def test_container():
 
 
 def test_registration(get_webdriver: webdriver.Chrome):
+    """
+    Регистрации нового пользователя на сервисе Gitea с помощью Selenium
+    :param get_webdriver: экземпляр веб-драйвера
+    :return: None
+    """
     driver = get_webdriver
     driver.get(context.gitea_config.root_url)
 
@@ -63,6 +69,11 @@ def test_registration(get_webdriver: webdriver.Chrome):
 
 
 def test_create_repository(get_webdriver: webdriver.Chrome):
+    """
+    Создание нового репозитория на сервисе Gitea с помощью Selenium
+    :param get_webdriver: экземпляр веб-драйвера
+    :return: None
+    """
     driver = get_webdriver
     driver.get(context.gitea_config.root_url)
     driver.find_element(By.XPATH, f'//*[@id="dashboard-repo-list"]/div/div[2]/h4/a').click()
@@ -77,6 +88,11 @@ def test_create_repository(get_webdriver: webdriver.Chrome):
 
 
 def test_create_commit(get_webdriver: webdriver.Chrome):
+    """
+    Создание коммита файла с помощью Selenium
+    :param get_webdriver: экземпляр веб-драйвера
+    :return: None
+    """
     driver = get_webdriver
     driver.find_element(By.XPATH, f'//a[contains(text(), "Новый файл")]').click()
 
@@ -98,6 +114,11 @@ def test_create_commit(get_webdriver: webdriver.Chrome):
 
 
 def test_open_file(get_webdriver: webdriver.Chrome):
+    """
+    Проверка, что итоговый текст в файле соответствует оригинальному
+    :param get_webdriver: экземпляр веб-драйвера
+    :return: None
+    """
     driver = get_webdriver
 
     driver.find_element(By.XPATH, f'//a[contains(text(), "Исходник")]').click()
