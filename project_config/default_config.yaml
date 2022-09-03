@@ -1,0 +1,8 @@
+gitea_options:
+  local_root_url: 'http://localhost:3000/'
+
+test_options:
+  chrome_path: 'PATH_TO_YOUR_CHROMEDRIVER'
+  repo_name: 'test_repository_name'
+  file_name: 'test_file_name'
+  file_msg: 'test message'
