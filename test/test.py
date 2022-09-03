@@ -13,7 +13,12 @@ context = ProjectContext()
 
 
 def test_container():
-    response = requests.get(context.gitea_config.root_url)
+    response = None
+    try:
+        response = requests.get(context.gitea_config.root_url)
+    except requests.exceptions.ConnectionError:
+        time.sleep(3)
+
     assert response.status_code == 200
 
     parser = etree.HTMLParser()
