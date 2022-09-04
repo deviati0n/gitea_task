@@ -4,11 +4,11 @@ from io import StringIO
 
 import requests
 from lxml import etree
+from requests.exceptions import ConnectionError
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from urllib3.exceptions import ProtocolError
-from  requests.exceptions import ConnectionError
 
 from project_config.project_context import ProjectContext
 
@@ -20,7 +20,6 @@ def test_container():
     Проверка, что веб-страница сервиса Gitea на целевом порту доступна
     и на ней находится 4 эталонных css-селектора + эталонный текст
     """
-
     try:
         response = requests.get(context.gitea_config.root_url)
     except (RemoteDisconnected, ProtocolError, ConnectionError):
