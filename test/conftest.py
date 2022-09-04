@@ -2,6 +2,8 @@ import time
 
 import docker
 import pytest
+from docker.errors import APIError
+from requests.exceptions import HTTPError
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -18,11 +20,14 @@ def run_container():
     После он останавливается и удаляется
     """
     client = docker.from_env()
-    container = client.containers.run(
-        image='gitea/gitea:1.17.1',
-        ports={'3000/tcp': ('0.0.0.0', 3000)},
-        detach=True
-    )
+    try:
+        container = client.containers.run(
+            image='gitea/gitea:1.17.1',
+            ports={'3000/tcp': ('0.0.0.0', 3000)},
+            detach=True
+        )
+    except (HTTPError, APIError):
+        raise Exception('Целевой порт (3000) контейнера уже занят.')
 
     while container.attrs['State']['Running'] is not True:
         time.sleep(5)
