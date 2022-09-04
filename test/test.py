@@ -1,4 +1,5 @@
 import time
+from http.client import RemoteDisconnected
 from io import StringIO
 
 import requests
@@ -6,6 +7,8 @@ from lxml import etree
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
+from urllib3.exceptions import ProtocolError
+from  requests.exceptions import ConnectionError
 
 from project_config.project_context import ProjectContext
 
@@ -18,7 +21,10 @@ def test_container():
     и на ней находится 4 эталонных css-селектора + эталонный текст
     """
 
-    response = requests.get(context.gitea_config.root_url)
+    try:
+        response = requests.get(context.gitea_config.root_url)
+    except (RemoteDisconnected, ProtocolError, ConnectionError):
+        raise Exception('Веб-страница недоступна.')
 
     assert response.status_code == 200
 
