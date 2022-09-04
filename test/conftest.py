@@ -12,27 +12,26 @@ context = ProjectContext()
 
 
 @pytest.fixture(autouse=True, scope="session")
-def generate_container():
+def run_container():
     """
     Запуск контейнера, который активен до тех пор, пока скрипт работает.
     После он останавливается и удаляется
     """
     client = docker.from_env()
     container = client.containers.run(
-        image='gitea/gitea:latest',
+        image='gitea/gitea:1.17.1',
         ports={'3000/tcp': ('0.0.0.0', 3000)},
         detach=True
     )
     time.sleep(5)
 
     yield container
-
     container.stop()
     container.remove()
 
 
 @pytest.fixture(scope="session")
-def get_webdriver():
+def run_webdriver():
     """
     Запуск веб-драйвера, который также активен до тех пор, пока скрипт работает
     """

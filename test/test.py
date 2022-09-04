@@ -35,13 +35,13 @@ def test_container():
     assert all(tree.xpath(el) for el in test_checkers) is True
 
 
-def test_registration(get_webdriver: webdriver.Chrome):
+def test_registration(run_webdriver: 'webdriver.Chrome'):
     """
     Регистрации нового пользователя на сервисе Gitea с помощью Selenium
-    :param get_webdriver: экземпляр веб-драйвера
+    :param run_webdriver: экземпляр веб-драйвера
     :return: None
     """
-    driver = get_webdriver
+    driver = run_webdriver
     driver.get(context.gitea_config.root_url)
 
     driver.find_element(By.XPATH, f'//button[@class="ui primary button"]').click()
@@ -52,6 +52,8 @@ def test_registration(get_webdriver: webdriver.Chrome):
         except NoSuchElementException:
             time.sleep(3)
             driver.get(context.gitea_config.root_url)
+
+    assert 'Регистрация - Gitea' in driver.title
 
     elements_name = {
         'user_name': 'user_name',
@@ -68,13 +70,13 @@ def test_registration(get_webdriver: webdriver.Chrome):
     driver.find_element(By.XPATH, f'//button[contains(text(), "Регистрация аккаунта")]').click()
 
 
-def test_create_repository(get_webdriver: webdriver.Chrome):
+def test_create_repository(run_webdriver: 'webdriver.Chrome'):
     """
     Создание нового репозитория на сервисе Gitea с помощью Selenium
-    :param get_webdriver: экземпляр веб-драйвера
+    :param run_webdriver: экземпляр веб-драйвера
     :return: None
     """
-    driver = get_webdriver
+    driver = run_webdriver
     driver.get(context.gitea_config.root_url)
     driver.find_element(By.XPATH, f'//*[@id="dashboard-repo-list"]/div/div[2]/h4/a').click()
 
@@ -84,16 +86,15 @@ def test_create_repository(get_webdriver: webdriver.Chrome):
 
     driver.find_element(By.XPATH, f'//*[@id="auto-init"]').click()
     driver.find_element(By.XPATH, f'//button[contains(text(), "Создать репозиторий")]').click()
-    driver.find_element(By.XPATH, f'//a[contains(text(), "Новый файл")]').click()
 
 
-def test_create_commit(get_webdriver: webdriver.Chrome):
+def test_create_commit(run_webdriver: 'webdriver.Chrome'):
     """
     Создание коммита файла с помощью Selenium
-    :param get_webdriver: экземпляр веб-драйвера
+    :param run_webdriver: экземпляр веб-драйвера
     :return: None
     """
-    driver = get_webdriver
+    driver = run_webdriver
     driver.find_element(By.XPATH, f'//a[contains(text(), "Новый файл")]').click()
 
     file_name = driver.find_element(By.ID, 'file-name')
@@ -113,13 +114,13 @@ def test_create_commit(get_webdriver: webdriver.Chrome):
     commit_msg.submit()
 
 
-def test_open_file(get_webdriver: webdriver.Chrome):
+def test_open_file(run_webdriver: 'webdriver.Chrome'):
     """
     Проверка, что итоговый текст в файле соответствует оригинальному
-    :param get_webdriver: экземпляр веб-драйвера
+    :param run_webdriver: экземпляр веб-драйвера
     :return: None
     """
-    driver = get_webdriver
+    driver = run_webdriver
 
     driver.find_element(By.XPATH, f'//a[contains(text(), "Исходник")]').click()
     output_text_file = driver.find_element(By.TAG_NAME, 'pre').text
