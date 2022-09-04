@@ -11,13 +11,13 @@ $ pip install -r requirements.txt
 ```
 
 Переименовать `default_config.py` в `config.py`. </br>
-Загрузить на свой компьютер `chromedriver.exe` и прописать путь к нему в конфиге.
+Загрузить на свой компьютер `chromedriver.exe` и прописать путь в конфиге к нему.
 
 
 ## Запуск
 Проверьте, что Docker запущен и целевой порт (3000) свободен. 
 
-Если есть желание, чтобы Selenium запускал браузер явно, то в `test/conftest.py` изменить `options.headless = True`.
+Если есть желание, чтобы Selenium запускал браузер явно, то в `test/conftest.py` изменить `options.headless = False`.
 
 ``` commandline
 $ pytest test/test.py
