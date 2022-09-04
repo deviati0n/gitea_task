@@ -23,7 +23,10 @@ def run_container():
         ports={'3000/tcp': ('0.0.0.0', 3000)},
         detach=True
     )
-    time.sleep(5)
+
+    while container.attrs['State']['Running'] is not True:
+        time.sleep(5)
+        container.reload()
 
     yield container
     container.stop()
